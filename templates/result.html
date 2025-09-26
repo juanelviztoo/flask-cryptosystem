@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3>{{algo}}</h3>
+    <div class="mb-3">
+        <label class="form-label">Plaintext</label>
+        <textarea class="form-control" rows="6">{{plaintext}}</textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Ciphertext</label>
+        <textarea class="form-control" rows="6">{{ciphertext}}</textarea>
+    </div>
+    <a href="/" class="btn btn-outline-success">BACK</a>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block content %}
+<form id="crypto-form" method="post" action="/process" enctype="multipart/form-data" novalidate>
+    <!-- Hidden input agar backend tahu mode (text/file) -->
+    <input type="hidden" name="input_type" id="input_type" value="text" />
+
+    <!-- ✅ Dropdown Cipher (Text Mode) -->
+    <div class="mb-3" id="text-mode-section">
+        <label class="form-label" for="algorithm-text">Algorithm (Text Mode)</label>
+        <select id="algorithm-text" name="algorithm_text" class="form-select">
+            <option value="" disabled selected>-- Pilih Cipher --</option>
+            {% for k, v in text_algos.items() %}
+                <option value="{{k}}">{{v.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- ✅ Dropdown Cipher (File Mode) -->
+    <div class="mb-3" id="file-mode-section" style="display:none;">
+        <label class="form-label" for="algorithm-file">Algorithm (File Mode)</label>
+        <select id="algorithm-file" name="algorithm_file" class="form-select">
+            <option value="" disabled selected>-- Pilih Cipher --</option>
+            {% for k, v in file_algos.items() %}
+                <option value="{{k}}">{{v.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- ✅ TEXT MODE INPUTS (default visible) -->
+    <div id="text-section">
+        <div class="mb-3">
+            <label class="form-label">Plaintext (for encrypt)</label>
+            <textarea id="plaintext" name="plaintext" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ciphertext (for decrypt)</label>
+            <textarea id="ciphertext" name="ciphertext" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="grouped" id="grouped">
+            <label class="form-check-label" for="grouped">Group output by 5 letters</label>
+        </div>
+    </div>
+
+    <!-- ✅ FILE MODE INPUTS (default hidden) -->
+    <div id="file-section" style="display:none;">
+        <div class="mb-3">
+            <label class="form-label">Upload file</label>
+            <select id="file-type" name="file_type" class="form-select mb-2">
+                <option value="plaintext" selected>Plaintext File</option>
+                <option value="ciphertext">Ciphertext File</option>
+            </select>
+            <input type="file" id="file" name="file" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="export-format" class="form-label">Export Format (for Encrypt)</label>
+            <select id="export-format" name="export_format" class="form-select">
+                <option value="enc" selected>Encapsulated File (.enc)</option>
+                <option value="inplace">In-place Encrypted (Same Extension)</option>
+            </select>
+            <div class="form-text mt-1">Select How Encrypted Files Will be Saved</div>
+        </div>
+    </div>
+
+    <!-- ✅ NORMAL KEY INPUTS -->
+    <div class="mb-3" id="normal-key-inputs">
+        <label class="form-label">Key (format depends on algorithm)</label>
+        <input id="key" name="key" class="form-control" />
+        <div id="key-help" class="form-text mt-1">[Examples shown here based on algorithm selection!]</div>
+    </div>
+
+    <!-- ✅ HILL CIPHER KEY MATRIX INPUTS -->
+    <div id="hill-key-inputs" class="mb-3" style="display:none;">
+        <label class="form-label">Hill Key Matrix</label>
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <label class="form-label me-2">Matrix Size:</label>
+            <select id="hill-size" class="form-select w-auto" onchange="generateMatrixInputs()">
+                <option value="2">2x2</option>
+                <option value="3">3x3</option>
+                <option value="4">4x4</option>
+            </select>
+        </div>
+        <div id="hill-matrix-container" class="hill-matrix-grid"></div>
+        <div class="form-text mt-1">Enter numbers 0–25. Example 2x2: 
+            <code>3 3; 2 5</code>
+        </div>
+    </div>
+
+    <!-- ✅ KEY FILE (optional) -->
+    <div class="mb-3">
+        <label class="form-label">Upload key file (optional). For One-Time Pad you may upload a long key text file.</label>
+        <input type="file" id="keyfile" name="keyfile" class="form-control" accept=".txt"/>
+    </div>
+
+    <div id="validation-errors" class="text-danger mb-3" style="display:none;"></div>
+
+    <div class="mb-3">
+        <button type="submit" name="action" value="encrypt" class="btn btn-outline-primary">ENCRYPT</button>
+        <button type="submit" name="action" value="decrypt" class="btn btn-outline-danger">DECRYPT</button>
+    </div>
+</form>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}

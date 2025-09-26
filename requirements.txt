@@ -1,0 +1,5 @@
+Flask>=2.0
+numpy>=1.21
+sympy>=1.9
+python-dotenv
+pytest>=7.0
