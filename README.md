@@ -1,21 +1,24 @@
 # Flask Cryptosystem WebApp
 
 ## Deskripsi Singkat
-Aplikasi web edukasi untuk mengimplementasikan cipher klasik (Shift, Substitution, Affine, Vigenere, Hill, Permutation) dan varian byte-wise untuk enkripsi file. Juga mendukung One-Time Pad (text-mode) dengan upload key file.
+Aplikasi Web Edukasi untuk Mengimplementasikan Cipher Clasic (Shift, Substitution, Affine, Vigenere, Hill, Permutation, dan Playfair) serta varian byte-wise untuk beberapa cipher yang mendukung enkripsi file. Juga mendukung One-Time Pad (text-mode) dengan upload key file.
 
 ## Struktur Project
 flask-cryptosystem/
 - app.py
 - requirements.txt
 - cipher/
-  - ciphers.py, __init__.py
+  - ciphers.py
 - templates/
   - base.html, index.html, result.html
 - static/
-  - styles.css
+  - styles.css, main.js
+- tests/
+  - test_ciphers.py
 - uploads/ (runtime)
 - outputs/ (runtime)
 - venv/ (install dahulu)
+- .gitignore
 
 ## Cara Menjalankan
 1. Buat virtualenv:
